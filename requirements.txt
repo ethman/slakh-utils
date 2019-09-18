@@ -1,3 +1,7 @@
 ffmpeg-python
 SoundFile
-PyYAML
+PyYAML>=5.1
+stempeg
+librosa
+loguru
+numpy
