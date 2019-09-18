@@ -14,14 +14,16 @@ import soundfile as sf
 import uuid
 from multiprocessing.dummy import Pool as ThreadPool
 import threading
+from distutils.util import strtobool
+
 
 def _wav_to_flac(input_path, output_dir, verbose=False):
     """
     Converts one file from wav to flac. Reads input wav file from disk and outputs
     flac file with the same basename into `output_dir`
     :param input_path (str): full path to wav file. Assumes ends in `.wav`
-    :param output_dir (str): directory to output the converted flac file. The name will be `input_path` with
-        `.wav` replaced with `.flac.`
+    :param output_dir (str): directory to output the converted flac file.
+        The name will be `input_path` with `.wav` replaced with `.flac.`
     :param verbose:
     """
     basename = os.path.splitext(os.path.basename(input_path))[0]
@@ -34,8 +36,8 @@ def _flac_to_wav(input_path, output_dir, verbose=False):
     Converts one file from flac to wav. Reads input flac file from disk and outputs
     wav file with the same basename into `output_dir`
     :param input_path (str): full path to flac file. Assumes ends in `.flac`
-    :param output_dir (str): directory to output the converted wav file. The name will be `input_path` with
-        `.flac` replaced with `.wav.`
+    :param output_dir (str): directory to output the converted wav file. The name will be
+        `input_path` with `.flac` replaced with `.wav.`
     :param verbose:
     """
     basename = os.path.splitext(os.path.basename(input_path))[0]
@@ -57,30 +59,28 @@ def _make_track_subset(input_dir, start=None, end=None):
                                 if os.path.isdir(os.path.join(input_dir, d))])
 
     if start is not None and end is not None:
-        track_directories = track_directories[start:end]
+        track_directories = track_directories[start-1:end-1]
     elif start is not None:
-        track_directories = track_directories[start:]
+        track_directories = track_directories[start-1:]
     elif end is not None:
-        track_directories = track_directories[:end]
+        track_directories = track_directories[:end-1]
 
     return track_directories
 
 
-def _convert_folder(in_track_dir, mix_name, output_base_dir, ffmpeg_func, verbose=False,
-                    is_fs=False):
+def _convert_folder(in_track_dir, mix_name, output_base_dir, ffmpeg_func, verbose=False):
     track_dir_basename = os.path.basename(in_track_dir)
     in_mix_path = os.path.join(in_track_dir, mix_name)
     out_track_dir = os.path.join(output_base_dir, track_dir_basename)
     out_stems_dir = os.path.join(out_track_dir, 'stems')
     os.makedirs(out_stems_dir, exist_ok=True)
 
-    if not is_fs:
-        shutil.copy(os.path.join(in_track_dir, 'metadata.yaml'),
-                    os.path.join(out_track_dir, 'metadata.yaml'))
-        shutil.copy(os.path.join(in_track_dir, 'all_src.mid'),
-                    os.path.join(out_track_dir, 'all_src.mid'))
-        shutil.copytree(os.path.join(in_track_dir, 'MIDI'),
-                        os.path.join(out_track_dir, 'MIDI'))
+    shutil.copy(os.path.join(in_track_dir, 'metadata.yaml'),
+                os.path.join(out_track_dir, 'metadata.yaml'))
+    shutil.copy(os.path.join(in_track_dir, 'all_src.mid'),
+                os.path.join(out_track_dir, 'all_src.mid'))
+    shutil.copytree(os.path.join(in_track_dir, 'MIDI'),
+                    os.path.join(out_track_dir, 'MIDI'))
 
     ffmpeg_func(in_mix_path, out_track_dir)
 
@@ -91,7 +91,7 @@ def _convert_folder(in_track_dir, mix_name, output_base_dir, ffmpeg_func, verbos
 
 
 def _apply_ffmpeg(base_dir, output_dir, compress=True, start=None, end=None, n_threads=1,
-                  verbose=False, fs=False):
+                  verbose=False):
 
     if compress:
         ffmpeg_func = _wav_to_flac
@@ -106,12 +106,12 @@ def _apply_ffmpeg(base_dir, output_dir, compress=True, start=None, end=None, n_t
     # Make a closure because mix_name, output_dir, and ffmpeg_func are unchanging at this point
     def _apply_convert_dir(in_track_dir):
         _convert_folder(in_track_dir, mix_name, output_dir,
-                        ffmpeg_func, verbose=verbose, is_fs=fs)
+                        ffmpeg_func, verbose=verbose)
 
     pool.map(_apply_convert_dir, track_directories)
 
 
-def to_flac(base_dir, output_dir, start=None, end=None, n_threads=1, verbose=False, fs=False):
+def to_flac(base_dir, output_dir, start=None, end=None, n_threads=1, verbose=False):
     """
     Convert all wav files in all folders (or a subset thereof) to flac files.
     :param base_dir: (str) path to dataset with uncompressed files
@@ -122,10 +122,10 @@ def to_flac(base_dir, output_dir, start=None, end=None, n_threads=1, verbose=Fal
     :param verbose: (str) display ffmpeg output
     """
     _apply_ffmpeg(base_dir, output_dir, compress=True, start=start, end=end,
-                  n_threads=n_threads, verbose=verbose, fs=fs)
+                  n_threads=n_threads, verbose=verbose)
 
 
-def to_wav(base_dir, output_dir, start=None, end=None, n_threads=1, verbose=False, fs=False):
+def to_wav(base_dir, output_dir, start=None, end=None, n_threads=1, verbose=False):
     """
     Convert all flac files in all folders (or a subset thereof) to wav files.
     :param base_dir: (str) path to dataset with compressed files
@@ -136,7 +136,7 @@ def to_wav(base_dir, output_dir, start=None, end=None, n_threads=1, verbose=Fals
     :param verbose: (str) display ffmpeg output
     """
     _apply_ffmpeg(base_dir, output_dir, compress=False, start=start, end=end,
-                  n_threads=n_threads, verbose=verbose, fs=fs)
+                  n_threads=n_threads, verbose=verbose)
 
 
 def _read_flac_to_numpy2(filename, aformat='s16be', sr=44100):
@@ -185,15 +185,23 @@ def read_flac_to_numpy(filename):
 if __name__ == '__main__':
 
     parser = argparse.ArgumentParser()
-    parser.add_argument('--input-dir', type=str, help='Base path to input directory')
-    parser.add_argument('--output-dir', type=str, help='')
-    parser.add_argument('--compress', type=bool)
-    parser.add_argument('--start', type=int, default=None, required=False)
-    parser.add_argument('--end', type=int, default=None, required=False)
-    parser.add_argument('--num-threads', type=int, default=1, required=False)
-    parser.add_argument('--fluid-synth', type=bool, default=False, required=False)
-    parser.add_argument('--verbose', type=bool, default=False, required=False)
+    parser.add_argument('--input-dir', '-i', type=str, required=True,
+                        help='Base path to input directory. (Required)')
+    parser.add_argument('--output-dir', '-o', type=str, required=True,
+                        help='Base path to output directory. (Required)')
+    parser.add_argument('--compress', '-c', type=lambda x:bool(strtobool(x)), required=True,
+                        help='If true, will convert from .wav to .flac, else'
+                             'will convert from .flac to .wav. (Required)')
+    parser.add_argument('--start', '-s', type=int, default=None, required=False,
+                        help='If converting a subset, the lowest Track ID. (Optional)')
+    parser.add_argument('--end', '-e', type=int, default=None, required=False,
+                        help='If converting a subset, the highest Track ID. (Optional)')
+    parser.add_argument('--num-threads', '-t', type=int, default=1, required=False,
+                        help='Number of threads to spawn to convert. (Optional)')
+    parser.add_argument('--verbose', '-v', type=lambda x:bool(strtobool(x)), default=False,
+                        required=False,
+                        help='Whether to print messages while processing. (Optional)')
 
     args = parser.parse_args()
     _apply_ffmpeg(args.input_dir, args.output_dir, args.compress, args.start,
-                  args.end, args.num_threads, args.verbose, args.fluid_synth)
+                  args.end, args.num_threads, args.verbose)

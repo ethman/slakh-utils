@@ -112,13 +112,13 @@ class Submixes(object):
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
-    parser.add_argument('submix_definition', required=True,
+    parser.add_argument('-submix-definition-file', '-s', type=str, required=True,
                         help='Path to yaml file to define a submix.')
-    parser.add_argument('root_dir', default=None,
+    parser.add_argument('-input-dir', '-i', type=str, required=True,
                         help='Base directory to apply a submix to the whole dataset.')
-    parser.add_argument('src_dir', default=None,
+    parser.add_argument('-output-dir','-o', type=str, required=True,
                         help='Directory to apply a submix to one individual set of sources/mixture.')
-    parser.add_argument('num_threads', default=1,
+    parser.add_argument('-num-threads', '-t', type=int, required=True,  default=1,
                         help='Number of threads to spwan to do the submixing.')
 
     args = parser.parse_args()
