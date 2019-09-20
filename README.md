@@ -152,9 +152,9 @@ arguments:
 ((Documentation and script coming soon.)) 
 
 Splits:
-- Train: ``Track00001 - Track01499``
-- Validation: ``Track01500 - Track01874``
-- Train: ``Track01875 - Track02100``
+- Train: ``Track00001 - Track01500``
+- Validation: ``Track01501 - Track01875``
+- Train: ``Track01876 - Track02100``
 
 
 ### Making Submixes
