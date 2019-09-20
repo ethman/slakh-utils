@@ -8,7 +8,18 @@ The Synthesized Lakh (Slakh) Dataset is a new dataset for audio source separatio
 Slakh is brought to you by [Mitsubishi Electric Research Lab (MERL)](http://www.merl.com/) and the [Interactive Audio Lab at Northwestern University](http://music.cs.northwestern.edu/). For more info, please visit [the Slakh website](www.slakh.com/).
 
 
-### At a glance
+### Table of Contents
+
+1. [At a Glance](#at-a-glance)
+2. [Metadata](#metadata)
+3. [Setting Up Utils](#setting-up-utils)
+4. [Converting to/from .flac](#converting-tofrom-flac)
+5. [Resampling](#resampling)
+6. [Make Splits](#make-splits)
+7. [Making Submixes](#making-submixes)
+8. [Mixing to Replicate Benchmark Experiments](#mixing-to-replicate-benchmark-experiments)
+
+### At a Glance
 
 - The dataset comes as a series of directories named like `TrackXXXXX`, where `XXXXX` is a number
     between `00001` and `02100`. This number is the ID of the track.
@@ -29,11 +40,11 @@ Track00001
         └─── S10.flac 
 ```
 
-<br>&emsp;- `all_src.mid` is the original MIDI file from Lakh that contains all of the sources.
-<br>&emsp;- `metadata.yaml` contains metadata for this track (see below.)
-<br>&emsp;- `MIDI` contains MIDI files separated by each instrument, the file names correspond with the stems.
-<br>&emsp;- `mix.flac` is the mixture, made my summing up all of the audio in the `stems` directory. 
-<br>&emsp;- `stems` contains isolated audio for each source in the mixture.
+<br>&emsp;&emsp;-> `all_src.mid` is the original MIDI file from Lakh that contains all of the sources.
+<br>&emsp;&emsp;-> `metadata.yaml` contains metadata for this track (see below.)
+<br>&emsp;&emsp;-> `MIDI` contains MIDI files separated by each instrument, the file names correspond with the stems.
+<br>&emsp;&emsp;-> `mix.flac` is the mixture, made my summing up all of the audio in the `stems` directory. 
+<br>&emsp;&emsp;-> `stems` contains isolated audio for each source in the mixture.
 - All audio in Slakh2100 is distributed in the `.flac` format. (Scripts to batch convert below.)
 - All audio was rendered at 44.1kHz, 16-bit (CD quality) before being converted to `.flac`.
 - Slakh2100 is distributed as a tarball (`.tar.gz`) that must be uncompressed prior to using any of these scripts.
@@ -43,7 +54,7 @@ Track00001
 
 All metadata is distributed as `yaml` files and are similar in structure to [MedleyDB](https://medleydb.weebly.com/)'s metadata files.
 
-Here is an annotated overview of what is in the metadata files for these tracks. Annotations are in parentheses after the entry below:
+Here is an annotated overview of what is in the metadata files for these tracks. Annotations are in parentheses after each entry below:
 
 ```
 UUID: 1a81ae092884234f3264e2f45927f00a (File name of the original MIDI file from Lakh, sans extension) 
@@ -72,7 +83,7 @@ stems:
   
   S10:
     ...
-target_peak: -1.0 (target peak [dB] when applying gain to all stems after summing mixture)
+target_peak: -1.0 (target peak [dB] when applying gain to all stems after summing mixture, will always be "-1.0")
 ```
 
 For a list of the MIDI program numbers and their organization see [these files](https://github.com/ethman/slakh-utils/tree/master/midi_inst_values).
@@ -131,12 +142,19 @@ arguments:
 
 ```
 
+### Resampling
+
+
+### Make Splits
+
 
 ### Making Submixes
 
-Makes submixes of different instruments within a mix.
+This is a script that makes submixes by combining sets of instruments within a mix. It is possible to define
+customizable submixes by providing a submix definition file. A few examples of submix definition files are provided
+[here](https://github.com/ethman/slakh-utils/tree/master/submixes/example_submixes).
 
-Usage:
+Full usage details:
 
 ```
 $ python submixes.py [-h] -submix-definition-file SUBMIX_DEFINITION_FILE
@@ -158,13 +176,9 @@ arguments:
 ```
 
 
-### Resampling
-
 
 ### Mixing to Replicate Benchmark Experiments
 
-
-### Make Splits
 
 
 
