@@ -144,8 +144,17 @@ arguments:
 
 ### Resampling
 
+((Documentation coming soon, for now look at the script in the `resampling` directory))
+
 
 ### Make Splits
+
+((Documentation and script coming soon.)) 
+
+Splits:
+Train: ``Track00001 - Track01499``
+Validation: ``Track01500 - Track01874``
+Train: ``Track01875 - Track02100``
 
 
 ### Making Submixes
