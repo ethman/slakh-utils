@@ -13,7 +13,7 @@ code in this repository and install the required packages like so:
 ### Making Submixes
 
 This is a script that makes submixes by combining sets of instruments within a mix. It is possible to define
-customizable submixes by providing a submix definition file. A few examples of submix definition files are provided
+customizable submixes by providing a submix definition file. A few examples of submix definition files are provided 
 [here](https://github.com/ethman/slakh-utils/tree/master/submixes/example_submixes).
 
 To use this script you can either provide the base path to all of Slakh to make submixes for every track,
@@ -46,7 +46,7 @@ mixed together into submix sources. Inside the yaml file is a dictionary that co
 a `Mixing Key` and the `Recipes` list. 
 
 
-The `Mixing key` tells the script what part of the [metadata](https://github.com/ethman/slakh-utils#metadata)to look at to define submix
+The `Mixing key` tells the script what part of the [metadata](https://github.com/ethman/slakh-utils#metadata) to look at to define submix
 sources (that get mixed together). Options for `Mixing key` could *technically* be any entry under the
 source name in `metadata.yaml`, but most common `Mixing key`s are (ordered from most to least
 general) `inst_class`, `program_num` (equivalent to `midi_program_name`), and `plugin_name`.
@@ -57,7 +57,7 @@ and the value is a list of possible entries that make the source. **Everything t
 isn't defined by a recipe will be put into a file called** `residuals.wav`.
 
 Here's an example. If we want to make a submix with every piano except harpsichord and clavinet, 
-first we look at the[MIDI instrument chart](https://github.com/ethman/slakh-utils/blob/master/midi_inst_values/general_midi_inst_0based.txt):
+first we look at the [MIDI instrument chart](https://github.com/ethman/slakh-utils/blob/master/midi_inst_values/general_midi_inst_0based.txt):
 
 ```
 - Piano
