@@ -27,10 +27,9 @@ def _file_ready_string(string):
 class Submixes(object):
     RESIDUALS_KEY = 'residuals'
 
-    def __init__(self, root_dir, submix_file):
+    def __init__(self, base_dir, submix_file):
 
-        self.root_directory = root_dir
-        self.have_submix = True
+        self.base_directory = base_dir
         self.submix_name = os.path.splitext(os.path.basename(submix_file))[0]
         self.submix_data = yaml.load(open(submix_file, 'r'))
         self.submix_recipes = self.submix_data['Recipes']
@@ -46,7 +45,7 @@ class Submixes(object):
             raise ValueError('\'{}\' is a reserved submix name.'.format(self.RESIDUALS_KEY))
 
     def _get_all_src_dirs(self):
-        return sorted([root for root, dirs, files in os.walk(self.root_directory)
+        return sorted([root for root, dirs, files in os.walk(self.base_directory)
                        if 'metadata.yaml' in files])
 
     @staticmethod
@@ -114,11 +113,11 @@ if __name__ == '__main__':
     parser = argparse.ArgumentParser()
     parser.add_argument('-submix-definition-file', '-s', type=str, required=True,
                         help='Path to yaml file to define a submix.')
-    parser.add_argument('-input-dir', '-i', type=str, required=True,
+    parser.add_argument('-input-dir', '-i', type=str, required=False,
                         help='Base directory to apply a submix to the whole dataset.')
-    parser.add_argument('-output-dir','-o', type=str, required=True,
-                        help='Directory to apply a submix to one individual set of sources/mixture.')
-    parser.add_argument('-num-threads', '-t', type=int, required=True,  default=1,
+    parser.add_argument('-src-dir', '-s', type=str, required=False,
+                        help='Directory of a single track to create a submix for.')
+    parser.add_argument('-num-threads', '-t', type=int, default=1,
                         help='Number of threads to spwan to do the submixing.')
 
     args = parser.parse_args()
@@ -134,3 +133,6 @@ if __name__ == '__main__':
     elif args.src_dir:
         sm = Submixes(None, args.submix_definition)
         sm.do_submix(args.src_dir)
+
+    else:
+        raise ValueError('I do not now how you got in this state, but something is broken!')

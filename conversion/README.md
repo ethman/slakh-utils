@@ -14,7 +14,7 @@ All of the audio in Slakh2100 comes compressed as .flac files. To convert every 
 (and vice versa), use the script provided in the `conversion/` directory called `flac_converter.py`.
 
 This script outputs a copy of the input Slakh with the .flac files converted to .wav files (or vice versa).
-It *does not* do the conversion in place! There is a toggle to determine whether you want to compress (to .flac)
+It **does not** do the conversion in place! There is a toggle to determine whether you want to compress (to .flac)
 or decompress (to .wav) the audio within Slakh, and there is also an option to multithread this process. See below for 
 all options.
 
