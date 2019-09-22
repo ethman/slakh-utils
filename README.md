@@ -46,7 +46,7 @@ Track00001
 <br>&emsp;&emsp;-> `mix.flac` is the mixture, made my summing up all of the audio in the `stems` directory. 
 <br>&emsp;&emsp;-> `stems` contains isolated audio for each source in the mixture.
 - All audio in Slakh2100 is distributed in the `.flac` format. (Scripts to batch convert below.)
-- All audio was rendered at 44.1kHz, 16-bit (CD quality) before being converted to `.flac`.
+- All audio is mono and was rendered at 44.1kHz, 16-bit (CD quality) before being converted to `.flac`.
 - Slakh2100 is distributed as a tarball (`.tar.gz`) that must be uncompressed prior to using any of these scripts.
 
 
