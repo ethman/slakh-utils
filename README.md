@@ -2,13 +2,13 @@
 
 Utilities for common tasks with the Slakh dataset.
 
-### About Slakh
+## About Slakh
 The Synthesized Lakh (Slakh) Dataset is a new dataset for audio source separation that is synthesized from the [Lakh MIDI Dataset v0.1](https://colinraffel.com/projects/lmd/) using professional-grade sample-based virtual instruments.  **Slakh2100** contains 2100 automatically mixed tracks and accompanying MIDI files synthesized using a professional-grade sampling engine. The tracks in **Slakh2100** are split into training (1500 tracks), validation (375 tracks), and test (225 tracks) subsets, totaling **145 hours** of mixtures.
 
 Slakh is brought to you by [Mitsubishi Electric Research Lab (MERL)](http://www.merl.com/) and the [Interactive Audio Lab at Northwestern University](http://music.cs.northwestern.edu/). For more info, please visit [the Slakh website](www.slakh.com/).
 
 
-### Table of Contents
+## Table of Contents
 
 1. [At a Glance](#at-a-glance)
 2. [Metadata](#metadata)
@@ -19,7 +19,7 @@ Slakh is brought to you by [Mitsubishi Electric Research Lab (MERL)](http://www.
 7. [Making Submixes](#making-submixes)
 8. [Mixing to Replicate Benchmark Experiments](#mixing-to-replicate-benchmark-experiments)
 
-### At a Glance
+## At a Glance
 
 - The dataset comes as a series of directories named like `TrackXXXXX`, where `XXXXX` is a number
     between `00001` and `02100`. This number is the ID of the track.
@@ -50,7 +50,7 @@ Track00001
 - Slakh2100 is distributed as a tarball (`.tar.gz`) that must be uncompressed prior to using any of these scripts.
 
 
-### Metadata
+## Metadata
 
 All metadata is distributed as `yaml` files and are similar in structure to [MedleyDB](https://medleydb.weebly.com/)'s metadata files.
 
@@ -89,8 +89,9 @@ target_peak: -1.0 (target peak [dB] when applying gain to all stems after summin
 For a list of the MIDI program numbers and their organization see [these files](https://github.com/ethman/slakh-utils/tree/master/midi_inst_values).
 
 
+## Scripts
 
-## Setting up utils
+### Setting up utils
 
 Before you can use any of the utils, you need python3 installed on your machine. It is 
 recommended to use a new virtual environment or anaconda environment. Then download or clone the
