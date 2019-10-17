@@ -72,7 +72,7 @@ class Submixes(object):
         submix_dir = os.path.join(srcs_dir, _file_ready_string(self.submix_name))
         os.makedirs(submix_dir, exist_ok=True)
 
-        mix_wav, sr = sf.read(os.path.join(srcs_dir, 'mix.wav'))
+        mix_wav, sr = sf.read(os.path.join(srcs_dir, 'mix.flac'))
 
         submixes_dict = {_file_ready_string(k): [] for k in self.submix_recipes.keys()}
         submixes_dict[self.RESIDUALS_KEY] = []
@@ -85,7 +85,7 @@ class Submixes(object):
 
             # Figure out which submix this source belongs to
             src_id = os.path.splitext(s)[0]
-            src_submix_name = src_metadata[src_id][self.submix_key]
+            src_submix_name = src_metadata['stems'][src_id][self.submix_key]
             key = self._inv_sm[src_submix_name] if src_submix_name in self._inv_sm else self.RESIDUALS_KEY
             key = _file_ready_string(key)
 
@@ -111,9 +111,9 @@ class Submixes(object):
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
-    parser.add_argument('-submix-definition-file', '-s', type=str, required=True,
+    parser.add_argument('-submix-definition', '-d', type=str, required=True,
                         help='Path to yaml file to define a submix.')
-    parser.add_argument('-input-dir', '-i', type=str, required=False,
+    parser.add_argument('-root-dir', '-i', type=str, required=False,
                         help='Base directory to apply a submix to the whole dataset.')
     parser.add_argument('-src-dir', '-s', type=str, required=False,
                         help='Directory of a single track to create a submix for.')
@@ -127,7 +127,7 @@ if __name__ == '__main__':
         raise ValueError('Must provide only one of (root_dir, src_dir).')
 
     elif args.root_dir:
-        sm = Submixes(args.input_dir, args.submix_definition)
+        sm = Submixes(args.root_dir, args.submix_definition)
         sm.do_all_submixes(args.num_threads)
 
     elif args.src_dir:
