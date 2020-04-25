@@ -7,7 +7,7 @@ The Synthesized Lakh (Slakh) Dataset is a new dataset for audio source separatio
 
 Slakh is brought to you by [Mitsubishi Electric Research Lab (MERL)](http://www.merl.com/) and the [Interactive Audio Lab at Northwestern University](http://music.cs.northwestern.edu/). For more info, please visit [the Slakh website](http://www.slakh.com/).
 
-**IMPORTANT: The orignal Slakh2100 has duplicate MIDI files, some some of whcih are present
+**IMPORTANT: The orignal Slakh2100 has duplicate MIDI files, some some of which are present
 in more than one of the train/test/validation splits! See [Make Splits](#make-splits) below for the fix!**
 
 
