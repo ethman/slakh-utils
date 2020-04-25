@@ -7,7 +7,7 @@ more than once. Same MIDI, different audio files. Still this can be an issue for
 
 To that end, we are releasing two additional ways to split Slakh2100. Here's the information about
 all of the Slakh2100 splits. *We ask that if you use Slakh2100 in a research paper, that you conform
-to this naming convention for easier reproducability.*
+to this naming convention for easier reproducibility.*
 
 **Slakh2100-orig**: This is the name for the original splits of the Slakh2100 dataset.
 
