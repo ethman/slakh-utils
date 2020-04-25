@@ -13,11 +13,12 @@ to this naming convention for easier reproducibility.*
 
 **Slakh2100-split2**: This is the name for the new split that *still contains all 2100 tracks*. This new split
 **moves** all tracks with duplicated MIDI files such that no duplicated MIDI files are in more than one split.
-There are still 1500 train tracks, 375 validation tracks, and 225 test tracks.
+There are still 1500 train tracks, 375 validation tracks, and 225 test tracks. For this configuration, use
+`splits_v2.json` with the script below.
 
 **Slakh2100-redux**: This is the name for the new split that does **not** contain all 2100 tracks. This **omits**
 tracks such that each MIDI file only occurs once. As such, there are **1710 total tracks**, 1289 in train,
-270 in validation, and 151 in test.
+270 in validation, and 151 in test. For this configuration, use `redux.json` with the script below.
 
 We have included a json file that links tracks to their MIDI duplicates at `duplicates.json`. 
 
