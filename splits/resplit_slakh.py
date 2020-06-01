@@ -33,7 +33,7 @@ def do_all_updates(slakh_base_dir, new_splits_file):
 
 
 def reset(slakh_base_dir):
-    split_dirs = ['train', 'val', 'test', 'omitted']
+    split_dirs = ['train', 'validation', 'test', 'omitted']
 
     track_dirs = []
     for split in split_dirs:
@@ -50,7 +50,7 @@ def reset(slakh_base_dir):
         if track_id <= 'Track01500':
             dest_path = os.path.join(slakh_base_dir, 'train', track_id)
         elif track_id <= 'Track01875':
-            dest_path = os.path.join(slakh_base_dir, 'val', track_id)
+            dest_path = os.path.join(slakh_base_dir, 'validation', track_id)
         else:
             dest_path = os.path.join(slakh_base_dir, 'test', track_id)
 
