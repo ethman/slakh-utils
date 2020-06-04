@@ -9,7 +9,7 @@ customizable submixes by providing a submix definition file. A few examples of s
 To use this script you can either provide the base path to all of Slakh to make submixes for every track,
 or you can provide it a single track to make a submix for only the provided track. Submix output
 is put into the `TrackXXXXX/` directory with the name of the submix definition file. For example,
-for a submix definition file named `band.yaml`, the output of this script will go into `TraackXXXXX/stems/band/`.
+for a submix definition file named `band.yaml`, the output of this script will go into `TraackXXXXX/band/`.
 
 Full usage details:
 
