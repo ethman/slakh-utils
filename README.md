@@ -101,7 +101,7 @@ recommended to use a new virtual environment or anaconda environment. Then downl
 code in this repository and install the required packages like so:
 
 ```bash
-    $ pip install -r requirements.txt
+$ pip install -r requirements.txt
 ```
 
 ### Converting to/from `.flac`
@@ -112,13 +112,7 @@ All of the audio in Slakh2100 comes compressed as .flac files. To convert every 
 This script outputs a copy of the input Slakh with the .flac files converted to .wav files (or vice versa).
 It **does not** do the conversion in place! There is a toggle to determine whether you want to compress (to .flac)
 or decompress (to .wav) the audio within Slakh, and there is also an option to multithread this process. See below for 
-all options.
-
-```bash
-    $ python flac_converter.py -i /path/to/flac/Slakh2100 -o /output/path/Slakh2100_wav -c False
-```
-
-Full usage details:
+full usage details:
 
 ```
 $ python flac_converter.py [-h] --input-dir INPUT_DIR --output-dir OUTPUT_DIR
@@ -144,6 +138,12 @@ arguments:
   --verbose VERBOSE, -v VERBOSE
                         Whether to print messages while processing. (Optional)
 
+```
+
+To convert the entire training directory from .flac to .wav, run:
+
+```bash
+$ python flac_converter.py -i /path/to/flac/slakh2100_flac/train/ -o /output/path/slakh2100_wav/train/ -c False
 ```
 
 ### Resampling
@@ -200,23 +200,25 @@ optional arguments:
 
 To convert `Slakh2100-orig` to `Slakh2100-split2`, run:
 ```
-$python resplit_slakh.py -d /path/to/slakh2100/ -s split_v2.json
+$ python resplit_slakh.py -d /path/to/slakh2100/ -s splits_v2.json
 ```
 
 To convert `Slakh2100-orig` to `Slakh2100-redux`, run:
 ```
-$python resplit_slakh.py -d /path/to/slakh2100/ -s redux.json
+$ python resplit_slakh.py -d /path/to/slakh2100/ -s redux.json
 ```
 
 
 To convert `Slakh2100-split2` or `Slakh2100-redux` back to `Slakh2100-orig`, run:
 ```
-$python resplit_slakh.py -d /path/to/slakh2100/ -r
+$ python resplit_slakh.py -d /path/to/slakh2100/ -r
 ```
 
 
 
 ### Making Submixes
+
+IMPORTANT: This step requires that the track(s) are in .wav format.
 
 This is a script that makes submixes by combining sets of instruments within a mix. It is possible to define
 customizable submixes by providing a submix definition file. A few examples of submix definition files are provided 
@@ -224,8 +226,8 @@ customizable submixes by providing a submix definition file. A few examples of s
 
 To use this script you can either provide the base path to all of Slakh to make submixes for every track,
 or you can provide it a single track to make a submix for only the provided track. Submix output
-is put into the `TrackXXXXX/stems/` directory with the name of the submix definition file. For example,
-for a submix definition file named `band.yaml`, the output of this script will go into `TraackXXXXX/stems/band/`.
+is put into the `TrackXXXXX/` directory with the name of the submix definition file. For example,
+for a submix definition file named `band.yaml`, the output of this script will go into `TraackXXXXX/stems/`.
 
 Full usage details:
 
@@ -302,7 +304,7 @@ Recipes:
 ``` 
 
 Let's name this file `my_pianos.yaml`. When give this submix definition to `submixes.py` it will
-make a new folder in the `stems` directory of every track called `my_pianos/`. Inside `my_pianos/`
+make a new folder in the base directory of every track called `my_pianos/`. Inside `my_pianos/`
 will be a file called `favorite_piano_sounds.wav` containing every track that has those MIDI instrument
 values and another file called `residuals.wav` containing everything else.
 
