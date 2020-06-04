@@ -28,7 +28,7 @@ def _wav_to_flac(input_path, output_dir, verbose=False):
     """
     basename = os.path.splitext(os.path.basename(input_path))[0]
     output_path = os.path.join(output_dir, basename + '.flac')
-    ffmpeg.input(input_path).output(output_path).run_async(overwrite_output=not verbose)
+    ffmpeg.input(input_path, threads=1).output(output_path, threads=1).run_async(overwrite_output=not verbose)
 
 
 def _flac_to_wav(input_path, output_dir, verbose=False):
@@ -42,7 +42,7 @@ def _flac_to_wav(input_path, output_dir, verbose=False):
     """
     basename = os.path.splitext(os.path.basename(input_path))[0]
     output_path = os.path.join(output_dir, basename + '.wav')
-    ffmpeg.input(input_path).output(output_path).run_async(overwrite_output=not verbose)
+    ffmpeg.input(input_path, threads=1).output(output_path, threads=1).run_async(overwrite_output=not verbose)
 
 
 def _make_track_subset(input_dir, start=None, end=None):
@@ -154,10 +154,10 @@ def _read_flac_to_numpy2(filename, aformat='s16be', sr=44100):
     """
     raise NotImplementedError('This doesn\'t work! Use `read_flac_to_numpy()` instead.')
     codec = 'pcm_' + aformat
-    out, err = ffmpeg.input(filename).output('pipe:',
-                                             format=aformat,
-                                             acodec=codec,
-                                             ar=sr).run(capture_stdout=True)
+    out, err = ffmpeg.input(filename, threads=1).output('pipe:',
+                                                        format=aformat,
+                                                        acodec=codec,
+                                                        ar=sr, threads=1).run(capture_stdout=True)
     return np.frombuffer(out)
 
 
@@ -176,7 +176,7 @@ def read_flac_to_numpy(filename):
 
     # this file temp_name is unique AF
     temp_name = '{}_{}_{}.wav'.format(str(uuid.uuid4()), os.getpid(), thread_id)
-    ffmpeg.input(filename).output(temp_name).run()
+    ffmpeg.input(filename, threads=1).output(temp_name, threads=1).run()
     wav, sr = sf.read(temp_name)
     os.remove(temp_name)
     return wav, sr
