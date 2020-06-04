@@ -57,6 +57,10 @@ def reset(slakh_base_dir):
         if dest_path != track_path:
             shutil.move(track_path, dest_path)
 
+    om_split_path = os.path.join(slakh_base_dir, split_dirs[-1])
+    if os.path.isdir(om_split_path):
+        shutil.rmtree(om_split_path)
+
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
