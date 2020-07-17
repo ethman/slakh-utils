@@ -5,10 +5,7 @@ Utilities for common tasks with the Slakh dataset.
 ## About Slakh
 The Synthesized Lakh (Slakh) Dataset is a new dataset for audio source separation that is synthesized from the [Lakh MIDI Dataset v0.1](https://colinraffel.com/projects/lmd/) using professional-grade sample-based virtual instruments.  **Slakh2100** contains 2100 automatically mixed tracks and accompanying MIDI files synthesized using a professional-grade sampling engine. The tracks in **Slakh2100** are split into training (1500 tracks), validation (375 tracks), and test (225 tracks) subsets, totaling **145 hours** of mixtures.
 
-Slakh is brought to you by [Mitsubishi Electric Research Lab (MERL)](http://www.merl.com/) and the [Interactive Audio Lab at Northwestern University](http://music.cs.northwestern.edu/). For more info, please visit [the Slakh website](http://www.slakh.com/).
-
-**IMPORTANT: The orignal Slakh2100 has duplicate MIDI files, some some of which are present
-in more than one of the train/test/validation splits! See [Make Splits](#make-splits) below for the fix!**
+Slakh is brought to you by [Mitsubishi Electric Research Lab (MERL)](http://www.merl.com/) and the [Interactive Audio Lab at Northwestern University](http://music.cs.northwestern.edu/). For more info, please visit [the Slakh website](http://www.slakh.com/)
 
 
 ## Table of Contents
@@ -35,12 +32,12 @@ Track00001
    └─── MIDI
    │    └─── S01.mid
    │    │    ...
-   │    └─── S10.mid
+   │    └─── SXX.mid
    └─── mix.flac
    └─── stems
         └─── S01.flac
         │    ...
-        └─── S10.flac 
+        └─── SXX.flac 
 ```
 
 <br>&emsp;&emsp;-> `all_src.mid` is the original MIDI file from Lakh that contains all of the sources.
@@ -51,6 +48,10 @@ Track00001
 - All audio in Slakh2100 is distributed in the `.flac` format. (Scripts to batch convert below.)
 - All audio is mono and was rendered at 44.1kHz, 16-bit (CD quality) before being converted to `.flac`.
 - Slakh2100 is distributed as a tarball (`.tar.gz`) that must be uncompressed prior to using any of these scripts.
+- Each mixture has a variable number of sources, with a minimum of 4 sources per mix. `metadata.yaml` has information about each source.
+- The sources have no guaranteed ordering. See `metadata.yaml` to determine which sources are which.
+- The MIDI for source XX in `all_src.mid` is not guaranteed to match `SXX.mid`, as some instrument-specific heuristics were applied to the MIDI to ensure proper synthesis. `SXX.mid` is the exact file used to synthesize `SXX.flac`.
+- **Some MIDI files are replicated** (due to a bug). This has can be ameliorated depending on your use case. See [Make Splits](#make-splits) below.
 
 
 ## Metadata
