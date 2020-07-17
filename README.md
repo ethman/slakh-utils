@@ -50,7 +50,7 @@ Track00001
 - Slakh2100 is distributed as a tarball (`.tar.gz`) that must be uncompressed prior to using any of these scripts.
 - Each mixture has a variable number of sources, with a minimum of 4 sources per mix. `metadata.yaml` has information about each source.
 - The sources have no guaranteed ordering. See `metadata.yaml` to determine which sources are which.
-- The MIDI for source XX in `all_src.mid` is not guaranteed to match `SXX.mid`, as some instrument-specific heuristics were applied to the MIDI to ensure proper synthesis. `SXX.mid` is the exact file used to synthesize `SXX.flac`.
+- The MIDI for source XX in `all_src.mid` is not guaranteed to match `SXX.mid`, as some instrument-specific heuristics were applied to the MIDI to ensure proper synthesis. `SXX.mid` is the exact file used to synthesize `SXX.flac`, whereas entry for source XX in `all_src.mid` is a direct copy from Lakh.
 - **Some MIDI files are replicated** (due to a bug). This has can be ameliorated depending on your use case. See [Make Splits](#make-splits) below.
 
 
