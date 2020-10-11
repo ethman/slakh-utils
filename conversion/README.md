@@ -1,11 +1,11 @@
-## Setting up utils
+### Setting up utils
 
 Before you can use any of the utils, you need python3 installed on your machine. It is 
 recommended to use a new virtual environment or anaconda environment. Then download or clone the
 code in this repository and install the required packages like so:
 
 ```bash
-    $ pip install -r requirements.txt
+$ pip install -r requirements.txt
 ```
 
 ### Converting to/from `.flac`
@@ -16,13 +16,7 @@ All of the audio in Slakh2100 comes compressed as .flac files. To convert every 
 This script outputs a copy of the input Slakh with the .flac files converted to .wav files (or vice versa).
 It **does not** do the conversion in place! There is a toggle to determine whether you want to compress (to .flac)
 or decompress (to .wav) the audio within Slakh, and there is also an option to multithread this process. See below for 
-all options.
-
-```bash
-    $ python flac_converter.py -i /path/to/flac/Slakh2100 -o /output/path/Slakh2100_wav -c False
-```
-
-Full usage details:
+full usage details:
 
 ```
 $ python flac_converter.py [-h] --input-dir INPUT_DIR --output-dir OUTPUT_DIR
@@ -48,4 +42,10 @@ arguments:
   --verbose VERBOSE, -v VERBOSE
                         Whether to print messages while processing. (Optional)
 
+```
+
+To convert the entire training directory from .flac to .wav, run:
+
+```bash
+$ python flac_converter.py -i /path/to/flac/slakh2100_flac/train/ -o /output/path/slakh2100_wav/train/ -c False
 ```

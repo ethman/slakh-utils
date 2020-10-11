@@ -1,16 +1,6 @@
-
-## Setting up utils
-
-Before you can use any of the utils, you need python3 installed on your machine. It is 
-recommended to use a new virtual environment or anaconda environment. Then download or clone the
-code in this repository and install the required packages like so:
-
-```bash
-    $ pip install -r requirements.txt
-```
-
-
 ### Making Submixes
+
+IMPORTANT: This step requires that the track(s) are in .wav format.
 
 This is a script that makes submixes by combining sets of instruments within a mix. It is possible to define
 customizable submixes by providing a submix definition file. A few examples of submix definition files are provided 
@@ -18,8 +8,8 @@ customizable submixes by providing a submix definition file. A few examples of s
 
 To use this script you can either provide the base path to all of Slakh to make submixes for every track,
 or you can provide it a single track to make a submix for only the provided track. Submix output
-is put into the `TrackXXXXX/stems/` directory with the name of the submix definition file. For example,
-for a submix definition file named `band.yaml`, the output of this script will go into `TraackXXXXX/stems/band/`.
+is put into the `TrackXXXXX/` directory with the name of the submix definition file. For example,
+for a submix definition file named `band.yaml`, the output of this script will go into `TraackXXXXX/band/`.
 
 Full usage details:
 
@@ -96,6 +86,6 @@ Recipes:
 ``` 
 
 Let's name this file `my_pianos.yaml`. When give this submix definition to `submixes.py` it will
-make a new folder in the `stems` directory of every track called `my_pianos/`. Inside `my_pianos/`
+make a new folder in the base directory of every track called `my_pianos/`. Inside `my_pianos/`
 will be a file called `favorite_piano_sounds.wav` containing every track that has those MIDI instrument
 values and another file called `residuals.wav` containing everything else.

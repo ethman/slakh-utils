@@ -85,7 +85,7 @@ class Submixes(object):
 
             # Figure out which submix this source belongs to
             src_id = os.path.splitext(s)[0]
-            src_submix_name = src_metadata[src_id][self.submix_key]
+            src_submix_name = src_metadata['stems'][src_id][self.submix_key]
             key = self._inv_sm[src_submix_name] if src_submix_name in self._inv_sm else self.RESIDUALS_KEY
             key = _file_ready_string(key)
 
@@ -93,7 +93,13 @@ class Submixes(object):
                 # Should be in the dict already, but just to make sure
                 submixes_dict[key] = []
 
+            # Ensure track has same length as mixture
+            pad_amt = mix_wav.shape[0] - src_wav.shape[0]
+            src_wav = np.append(src_wav, np.zeros(pad_amt))
+
             submixes_dict[key].append(src_wav)
+
+        submixes = []
 
         # Sum all of the sources in each submix and ready the info for the feature reader.
         for src_name, src_data in submixes_dict.items():
@@ -108,12 +114,19 @@ class Submixes(object):
             submix = np.sum(src_data, axis=0)
             sf.write(src_path, submix, sr)
 
+            if src_name != 'residuals':
+                submixes += [submix]
+
+        src_path = os.path.join(submix_dir, 'submix.wav')
+        mixture = np.sum(submixes, axis=0)
+        sf.write(src_path, mixture, sr)
+
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
-    parser.add_argument('-submix-definition-file', '-s', type=str, required=True,
+    parser.add_argument('-submix-definition', '-d', type=str, required=True,
                         help='Path to yaml file to define a submix.')
-    parser.add_argument('-input-dir', '-i', type=str, required=False,
+    parser.add_argument('-root-dir', '-i', type=str, required=False,
                         help='Base directory to apply a submix to the whole dataset.')
     parser.add_argument('-src-dir', '-s', type=str, required=False,
                         help='Directory of a single track to create a submix for.')
@@ -127,7 +140,7 @@ if __name__ == '__main__':
         raise ValueError('Must provide only one of (root_dir, src_dir).')
 
     elif args.root_dir:
-        sm = Submixes(args.input_dir, args.submix_definition)
+        sm = Submixes(args.root_dir, args.submix_definition)
         sm.do_all_submixes(args.num_threads)
 
     elif args.src_dir:

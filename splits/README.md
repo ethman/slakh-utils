@@ -1,4 +1,4 @@
-## Make Splits
+### Make Splits
 
 The original Slakh2100 was found to have many duplicate MIDI files, some MIDI duplicates that are present
 in more than one of the train/test/validation splits.
@@ -20,8 +20,8 @@ There are still 1500 train tracks, 375 validation tracks, and 225 test tracks. F
 tracks such that each MIDI file only occurs once. As such, there are **1710 total tracks**, 1289 in train,
 270 in validation, and 151 in test. For this configuration, use `redux.json` with the script below.
 
+All of the code and json data are in the `splits/` directory of this repository.
 We have included a json file that links tracks to their MIDI duplicates at `duplicates.json`. 
-
 
 Additionally, we have included a script that will convert from `Slakh2100-orig` to `Slakh2100-split2` or `Slakh2100-redux`.
 It will also convert `Slakh2100-split2` or `Slakh2100-redux` back to `Slakh2100-orig` using the `-r` flag.
@@ -47,16 +47,16 @@ optional arguments:
 
 To convert `Slakh2100-orig` to `Slakh2100-split2`, run:
 ```
-$python resplit_slakh.py -d /path/to/slakh2100/ -s split_v2.json
+$ python resplit_slakh.py -d /path/to/slakh2100/ -s splits_v2.json
 ```
 
 To convert `Slakh2100-orig` to `Slakh2100-redux`, run:
 ```
-$python resplit_slakh.py -d /path/to/slakh2100/ -s redux.json
+$ python resplit_slakh.py -d /path/to/slakh2100/ -s redux.json
 ```
 
 
 To convert `Slakh2100-split2` or `Slakh2100-redux` back to `Slakh2100-orig`, run:
 ```
-$python resplit_slakh.py -d /path/to/slakh2100/ -r
+$ python resplit_slakh.py -d /path/to/slakh2100/ -r
 ```
