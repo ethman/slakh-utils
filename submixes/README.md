@@ -30,7 +30,7 @@ $ python submixes.py [-h] -submix-definition-file SUBMIX_DEFINITION_FILE
 
 arguments:
   -h, --help            show this help message and exit
-  -submix-definition-file SUBMIX_DEFINITION_FILE, -s SUBMIX_DEFINITION_FILE
+  -submix-definition-file SUBMIX_DEFINITION_FILE, -d SUBMIX_DEFINITION_FILE
                         Path to yaml file to define a submix.
   -input-dir INPUT_DIR, -i INPUT_DIR
                         Base directory to apply a submix to the whole dataset.
