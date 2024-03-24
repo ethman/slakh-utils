@@ -31,7 +31,7 @@ class Submixes(object):
 
         self.base_directory = base_dir
         self.submix_name = os.path.splitext(os.path.basename(submix_file))[0]
-        self.submix_data = yaml.load(open(submix_file, 'r'))
+        self.submix_data = yaml.load(open(submix_file, 'r'), Loader=yaml.FullLoader)
         self.submix_recipes = self.submix_data['Recipes']
 
         all_vals = [i for s in self.submix_recipes.values() for i in s]
@@ -68,7 +68,7 @@ class Submixes(object):
         pool.map(self.do_submix, dirs)
 
     def do_submix(self, srcs_dir):
-        src_metadata = yaml.load(open(os.path.join(srcs_dir, 'metadata.yaml'), 'r'))
+        src_metadata = yaml.load(open(os.path.join(srcs_dir, 'metadata.yaml'), 'r'), Loader=yaml.FullLoader)
         submix_dir = os.path.join(srcs_dir, _file_ready_string(self.submix_name))
         os.makedirs(submix_dir, exist_ok=True)
 
@@ -85,7 +85,7 @@ class Submixes(object):
 
             # Figure out which submix this source belongs to
             src_id = os.path.splitext(s)[0]
-            src_submix_name = src_metadata[src_id][self.submix_key]
+            src_submix_name = src_metadata['stems'][src_id][self.submix_key]
             key = self._inv_sm[src_submix_name] if src_submix_name in self._inv_sm else self.RESIDUALS_KEY
             key = _file_ready_string(key)
 
@@ -113,9 +113,9 @@ if __name__ == '__main__':
     parser = argparse.ArgumentParser()
     parser.add_argument('-submix-definition-file', '-s', type=str, required=True,
                         help='Path to yaml file to define a submix.')
-    parser.add_argument('-input-dir', '-i', type=str, required=False,
+    parser.add_argument('-root-dir', '-i', type=str, required=False,
                         help='Base directory to apply a submix to the whole dataset.')
-    parser.add_argument('-src-dir', '-s', type=str, required=False,
+    parser.add_argument('-src-dir', '--src-dir', type=str, required=False,
                         help='Directory of a single track to create a submix for.')
     parser.add_argument('-num-threads', '-t', type=int, default=1,
                         help='Number of threads to spwan to do the submixing.')
@@ -127,11 +127,11 @@ if __name__ == '__main__':
         raise ValueError('Must provide only one of (root_dir, src_dir).')
 
     elif args.root_dir:
-        sm = Submixes(args.input_dir, args.submix_definition)
+        sm = Submixes(args.root_dir, args.submix_definition_file)
         sm.do_all_submixes(args.num_threads)
 
     elif args.src_dir:
-        sm = Submixes(None, args.submix_definition)
+        sm = Submixes(None, args.submix_definition_file)
         sm.do_submix(args.src_dir)
 
     else:
